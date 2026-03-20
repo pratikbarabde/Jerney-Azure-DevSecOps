@@ -2,7 +2,7 @@ resource_group_name = "aks-dev-rg"
 location            = "Central India"
 
 cluster_name        = "jerney-aks"
-kubernetes_version  = "1.29.0"
+kubernetes_version  = "1.34.3"
 
 node_count = 2
 vm_size    = "Standard_DS2_v2"
