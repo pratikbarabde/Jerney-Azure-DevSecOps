@@ -207,7 +207,7 @@ spec:
         - name: frontend
           image: FRONTEND_IMAGE_PLACEHOLDER
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           resources:
             requests:
               cpu: 50m
@@ -229,4 +229,4 @@ spec:
     app: jerney-frontend
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 80

@@ -40,15 +40,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: "${{ matrix.component }}/package-lock.json"
 
       - name: Install dependencies
-        working-directory: ${{ matrix.component }}
-        run: npm ci
+        working-directory: ${{ matrix.component }}/src
+        run: npm install
 
       - name: Run ESLint
-        working-directory: ${{ matrix.component }}
+        working-directory: ${{ matrix.component }}/src
         run: npm run lint
 
   # ==============================================================
@@ -69,16 +67,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: "${{ matrix.component }}/package-lock.json"
 
       - name: Install dependencies
-        working-directory: ${{ matrix.component }}
-        run: npm ci
+        working-directory: ${{ matrix.component }}/src
+        run: npm install
 
       # npm audit for known vulnerabilities (fail on high/critical)
       - name: npm audit
-        working-directory: ${{ matrix.component }}
+        working-directory: ${{ matrix.component }}/src
         run: npm audit --audit-level=high || true
         # `|| true` to not fail on moderate — adjust in prod
 
@@ -124,8 +120,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./${{ matrix.component }}
-          file: ./${{ matrix.component }}/Dockerfile
+          context: ./${{ matrix.component }}/src
+          file: ./${{ matrix.component }}/src/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -151,7 +147,7 @@ jobs:
 
       - name: Build image for scanning
         run: |
-          docker build -t jerney-${{ matrix.component }}:scan ./${{ matrix.component }}
+          docker build -t jerney-${{ matrix.component }}:scan -f ./${{ matrix.component }}/src/Dockerfile ./${{ matrix.component }}/src
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -208,7 +204,7 @@ jobs:
       - name: Run Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: ${{ matrix.component }}/Dockerfile
+          dockerfile: ${{ matrix.component }}/src/Dockerfile
           failure-threshold: warning
 
   # ==============================================================
