@@ -1,7 +1,6 @@
-
 const express = require('express');
 const router = express.Router();
-const { pool } = require('./db');
+const { pool } = require('../db');
 
 // GET all posts (newest first)
 router.get('/', async (req, res) => {
@@ -107,4 +106,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-

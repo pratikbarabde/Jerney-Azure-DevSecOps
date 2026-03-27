@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { pool } = require('./db');
+const { pool } = require('../db');
 
 // GET comments for a post
 router.get('/post/:postId', async (req, res) => {
