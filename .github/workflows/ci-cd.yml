@@ -120,8 +120,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./${{ matrix.component }}/src
-          file: ./${{ matrix.component }}/src/Dockerfile
+          context: ./${{ matrix.component }}
+          file: ./${{ matrix.component }}/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -174,11 +174,11 @@ jobs:
       - name: Run Checkov on Terraform
         uses: bridgecrewio/checkov-action@v12
         with:
-          directory: Terraform/
-          framework: terraform
-          soft_fail: false
-          skip_check: CKV_AWS_39,CKV_AWS_58  # Public EKS endpoint (intentional for dev)
-          output_format: cli
+          directory: "Terraform/"
+          framework: "terraform"
+          
+          skip_check: "CKV_AWS_39,CKV_AWS_58"  # Public EKS endpoint (intentional for dev)
+          output_format: "cli"
 
       - name: Run Checkov on Kubernetes manifests
         uses: bridgecrewio/checkov-action@v12
