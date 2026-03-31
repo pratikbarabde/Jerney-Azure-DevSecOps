@@ -12,7 +12,9 @@ FROM node:20-alpine AS production
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # Security: remove unnecessary packages
+RUN apk add --no-cache nodejs npm
 RUN apk --no-cache add dumb-init
+
 
 WORKDIR /app
 

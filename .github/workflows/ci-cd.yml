@@ -205,8 +205,8 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: ${{ matrix.component }}/Dockerfile
-          failure-threshold: warning
-          continue-on-error: true   # ✅ ADD THIS
+          failure-threshold: error
+          
 
   # ==============================================================
   # STAGE 7: Update K8s Manifest with New Image Tag
