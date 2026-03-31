@@ -2,7 +2,8 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --omit=dev && npm cache clean --force
+COPY . .
 
 # ---- Production stage ----
 FROM node:20-alpine AS production
@@ -15,9 +16,8 @@ RUN apk --no-cache add dumb-init
 
 WORKDIR /app
 
-# Copy only production dependencies from build stage
-COPY --from=build /app/node_modules ./node_modules
-COPY src/ ./src/
+# Copy application files and production dependencies from build stage
+COPY --from=build /app ./
 
 # Security: own files by non-root user
 RUN chown -R appuser:appgroup /app
@@ -28,4 +28,4 @@ EXPOSE 5000
 
 # Security: use dumb-init for proper signal handling (PID 1 problem)
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["node", "src/index.js"]
+CMD ["node", "index.js"]

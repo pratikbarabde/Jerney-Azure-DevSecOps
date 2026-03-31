@@ -1,0 +1,232 @@
+# ==============================================================
+# Jerney Blog Platform - AKS Production Manifest
+# ==============================================================
+
+# ---- Namespace ----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jerney
+
+---
+# ---- Secret (Use Key Vault in real production) ----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jerney-db-secret
+  namespace: jerney
+type: Opaque
+data:
+  POSTGRES_USER: amVybmV5X3VzZXI=
+  POSTGRES_PASSWORD: amVybmV5X3Bhc3NfMjAyNg==
+  POSTGRES_DB: amVybmV5X2Ri
+
+---
+# ---- StorageClass (Azure Disk) ----
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: jerney-aks-sc
+provisioner: disk.csi.azure.com
+parameters:
+  skuName: StandardSSD_LRS
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+
+---
+# ---- PVC ----
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jerney-db-pvc
+  namespace: jerney
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: jerney-aks-sc
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+# ---- PostgreSQL Deployment ----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jerney-db
+  namespace: jerney
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: jerney-db
+  template:
+    metadata:
+      labels:
+        app: jerney-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: jerney-db-secret
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: jerney-db-pvc
+
+---
+# ---- DB Service ----
+apiVersion: v1
+kind: Service
+metadata:
+  name: jerney-db
+  namespace: jerney
+spec:
+  type: ClusterIP
+  selector:
+    app: jerney-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+---
+# ---- Backend Deployment ----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jerney-backend
+  namespace: jerney
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jerney-backend
+  template:
+    metadata:
+      labels:
+        app: jerney-backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret   # Required if images are private
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z jerney-db 5432; do
+                echo "Waiting for DB..."
+                sleep 3
+              done
+      containers:
+        - name: backend
+          image: BACKEND_IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              value: jerney-db
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jerney-db-secret
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jerney-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: jerney-db-secret
+                  key: POSTGRES_DB
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+
+---
+# ---- Backend Service ----
+apiVersion: v1
+kind: Service
+metadata:
+  name: jerney-backend
+  namespace: jerney
+spec:
+  type: ClusterIP
+  selector:
+    app: jerney-backend
+  ports:
+    - port: 5000
+      targetPort: 5000
+
+---
+# ---- Frontend Deployment ----
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jerney-frontend
+  namespace: jerney
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jerney-frontend
+  template:
+    metadata:
+      labels:
+        app: jerney-frontend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: frontend
+          image: FRONTEND_IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+
+---
+# ---- Frontend Service (Public Access) ----
+apiVersion: v1
+kind: Service
+metadata:
+  name: jerney-frontend
+  namespace: jerney
+spec:
+  type: LoadBalancer
+  selector:
+    app: jerney-frontend
+  ports:
+    - port: 80
+      targetPort: 80
