@@ -184,7 +184,7 @@ jobs:
           directory: k8s/
           framework: kubernetes
           soft_fail: true  # Soft fail for K8s (some checks may not apply)
-          output_format: cli
+          
 
   # ==============================================================
   # STAGE 6: Dockerfile Lint (Hadolint)
