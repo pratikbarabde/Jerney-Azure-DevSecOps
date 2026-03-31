@@ -65,6 +65,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   network_profile {
     network_plugin    = "azure"
     load_balancer_sku = "standard"
+    service_cidr   = "10.2.0.0/16"   # ✅ FIXED (no overlap)
+    dns_service_ip = "10.2.0.10"
+
+  
   }
 
   # -----------------------------
