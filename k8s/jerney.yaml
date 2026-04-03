@@ -139,6 +139,7 @@ spec:
       containers:
         - name: backend
 <<<<<<< HEAD
+<<<<<<< HEAD
           image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:13d959a
 =======
 <<<<<<< HEAD
@@ -147,6 +148,9 @@ spec:
           image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:13d959a
 >>>>>>> 046c45444781d85956842097fb919bacd63694f5
 >>>>>>> 770949a7be891e455e66c6da041a24fd2d29f023
+=======
+          image: BACKEND_IMAGE_PLACEHOLDER
+>>>>>>> ce6a49d (fix: resolved merge conflicts in k8s manifest)
           ports:
             - containerPort: 5000
           env:
@@ -214,6 +218,7 @@ spec:
       containers:
         - name: frontend
 <<<<<<< HEAD
+<<<<<<< HEAD
           image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:13d959a
           ports:
 =======
@@ -225,6 +230,10 @@ spec:
 >>>>>>> 046c45444781d85956842097fb919bacd63694f5
 >>>>>>> 770949a7be891e455e66c6da041a24fd2d29f023
           ports:
+=======
+          image: FRONTEND_IMAGE_PLACEHOLDER
+          ports:
+>>>>>>> ce6a49d (fix: resolved merge conflicts in k8s manifest)
             - containerPort: 80
           resources:
             requests:
