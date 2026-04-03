@@ -147,8 +147,7 @@ jobs:
 
       - name: Build image for scanning
         run: |
-          docker build -t jerney-${{ matrix.component }}:scan -f ./${{ matrix.component }}/src/Dockerfile ./${{ matrix.component }}/src
-
+           docker build -t jerney-${{ matrix.component }}:scan -f ./${{ matrix.component }}/Dockerfile ./${{ matrix.component }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
