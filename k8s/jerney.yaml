@@ -139,12 +139,12 @@ spec:
       containers:
         - name: backend
 <<<<<<< HEAD
-          image: BACKEND_IMAGE_PLACEHOLDER
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:13d959a
 =======
 <<<<<<< HEAD
-          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:2dd97fb
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:13d959a
 =======
-          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:2dd97fb
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:13d959a
 >>>>>>> 046c45444781d85956842097fb919bacd63694f5
 >>>>>>> 770949a7be891e455e66c6da041a24fd2d29f023
           ports:
@@ -214,14 +214,14 @@ spec:
       containers:
         - name: frontend
 <<<<<<< HEAD
-          image: FRONTEND_IMAGE_PLACEHOLDER
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:13d959a
           ports:
 =======
 <<<<<<< HEAD
-          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:2dd97fb
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:13d959a
           ports:
 =======
-          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:2dd97fb
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:13d959a
 >>>>>>> 046c45444781d85956842097fb919bacd63694f5
 >>>>>>> 770949a7be891e455e66c6da041a24fd2d29f023
           ports:
