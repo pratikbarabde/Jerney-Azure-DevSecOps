@@ -269,7 +269,9 @@ jobs:
             --resource-group aks-dev-rg \
             --name jerney-aks \
             --overwrite-existing
-
+      - name: Pull latest changes
+        run: |
+          git pull origin main
       - name: Deploy to AKS
         run: |
           kubectl apply -f k8s/jerney.yaml
