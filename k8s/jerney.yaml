@@ -138,7 +138,7 @@ spec:
               done
       containers:
         - name: backend
-          image: BACKEND_IMAGE_PLACEHOLDER
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-backend:7a0b594
           ports:
             - containerPort: 5000
           env:
@@ -205,7 +205,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: frontend
-          image: FRONTEND_IMAGE_PLACEHOLDER
+          image: ghcr.io/pratikbarabde/Jerney-Azure-DevSecOps/jerney-frontend:7a0b594
           ports:
             - containerPort: 80
           resources:
