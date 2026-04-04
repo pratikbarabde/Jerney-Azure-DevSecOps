@@ -15,4 +15,7 @@ terraform/crash.log
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.db*.tfstate
+*.tfstate
+*.tfstate
+*.tfstate.backup
