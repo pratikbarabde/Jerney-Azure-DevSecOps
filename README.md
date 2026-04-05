@@ -145,7 +145,7 @@ That means the same application can be:
 This is the fastest way to start the whole application locally.
 
 ```bash
-git clone git@github.com:Ravi-Theja-pallikonda/Jerney-Azure-DevSecOps.git
+git clone git@github.com:pratikbarabde/Jerney-Azure-DevSecOps.git
 cd Jerney-Azure-DevSecOps
 docker compose up --build
 ```
@@ -401,6 +401,6 @@ Typical flow:
 
 ## Author
 
-Ravi Theja Pallikonda
+Pratik Barabde
 
 DevOps Engineer focused on Azure, Terraform, containers, CI/CD, and cloud-native delivery.
