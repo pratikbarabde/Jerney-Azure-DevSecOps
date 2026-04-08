@@ -141,7 +141,7 @@ spec:
               done
       containers:
         - name: backend
-          image: ghcr.io/pratikbarabde/jerney-azure-devsecops/jerney-backend:33fcf79
+          image: ghcr.io/pratikbarabde/jerney-azure-devsecops/jerney-backend:269c3e0
           ports:
             - containerPort: 5000
           env:
@@ -208,7 +208,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: frontend
-          image: ghcr.io/pratikbarabde/jerney-azure-devsecops/jerney-frontend:33fcf79
+          image: ghcr.io/pratikbarabde/jerney-azure-devsecops/jerney-frontend:269c3e0
           ports:
             - containerPort: 8080
           resources:
