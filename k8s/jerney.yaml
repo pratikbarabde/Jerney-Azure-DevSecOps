@@ -1,7 +1,7 @@
 # ==============================================================
 # Jerney Blog Platform - AKS Production Manifest
 # ==============================================================
-# test comment
+# test comment push
 # ---- Namespace ----
 apiVersion: v1
 kind: Namespace
